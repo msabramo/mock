@@ -96,7 +96,21 @@ func (m assignableToTypeOfMatcher) Matches(x interface{}) bool {
 }
 
 func (m assignableToTypeOfMatcher) String() string {
-	return "is assignable to " + m.targetType.Name()
+	var (
+		targetType    reflect.Type
+		targetTypeStr string
+	)
+	if m.targetType.Kind() == reflect.Ptr {
+		targetType = m.targetType.Elem()
+		targetTypeStr = "&" + targetType.Name()
+	} else {
+		targetType = m.targetType
+		targetTypeStr = targetType.Name()
+	}
+	if targetType.Kind() == reflect.Struct {
+		targetTypeStr += "{}"
+	}
+	return "is assignable to " + targetTypeStr
 }
 
 // Constructors

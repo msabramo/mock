@@ -115,3 +115,24 @@ func TestAssignableToTypeOfMatcher(t *testing.T) {
 		t.Errorf(`AssignableToTypeOf(&Dog{}) should match &Dog{Breed: "pug", Name: "Fido"}`)
 	}
 }
+
+func TestAssignableToTypeOfMatcherIntVal(t *testing.T) {
+	expectedStr := "is assignable to int"
+	if str := gomock.AssignableToTypeOf(5).String(); str != expectedStr {
+		t.Errorf(`Was expecting %+q but got %+q`, expectedStr, str)
+	}
+}
+
+func TestAssignableToTypeOfMatcherStringStructVal(t *testing.T) {
+	expectedStr := "is assignable to Dog{}"
+	if str := gomock.AssignableToTypeOf(Dog{}).String(); str != expectedStr {
+		t.Errorf(`Was expecting %+q but got %+q`, expectedStr, str)
+	}
+}
+
+func TestAssignableToTypeOfMatcherStringStructPtr(t *testing.T) {
+	expectedStr := "is assignable to &Dog{}"
+	if str := gomock.AssignableToTypeOf(&Dog{}).String(); str != expectedStr {
+		t.Errorf(`Was expecting %+q but got %+q`, expectedStr, str)
+	}
+}
